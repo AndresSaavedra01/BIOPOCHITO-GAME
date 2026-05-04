@@ -3,8 +3,12 @@ extends CharacterBody3D
 @onready var camera_controller := $CameraController
 @onready var skin := $Skin
 
+
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
+
+func _ready() -> void:
+	pass
 
 
 func _physics_process(delta: float) -> void:
@@ -16,7 +20,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 	
 	
-	var input_dir := Input.get_vector("left", "right", "up", "down")	
+	var input_dir := Input.get_vector("left", "right", "up", "down")
 	var move_direction =  get_move_direction(input_dir);
 	
 	if move_direction:

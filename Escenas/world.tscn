@@ -21,6 +21,12 @@ size = Vector3(64.677376, 1.0048828, 63.998775)
 [sub_resource type="BoxMesh" id="BoxMesh_f3sb7"]
 size = Vector3(65.73, 0.955, 63.455)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_8usl3"]
+size = Vector3(1, 11.419617, 19.558044)
+
+[sub_resource type="BoxMesh" id="BoxMesh_r16dl"]
+size = Vector3(1, 8.62, 21.555)
+
 [node name="Node3D" type="Node3D" unique_id=935739022]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1088683860]
@@ -41,3 +47,13 @@ mesh = SubResource("BoxMesh_f3sb7")
 
 [node name="Player" parent="." unique_id=205796216 instance=ExtResource("1_ne2cx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.299971, 0)
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=1541571008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.679187, 2.1110368, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=1918078933]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.396637, -0.98617554)
+shape = SubResource("BoxShape3D_8usl3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=2109914241]
+mesh = SubResource("BoxMesh_r16dl")
