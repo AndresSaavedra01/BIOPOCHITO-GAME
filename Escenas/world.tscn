@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://vmqm4k0bgtdh"]
 
 [ext_resource type="PackedScene" uid="uid://r85rk6tglmw2" path="res://Escenas/player.tscn" id="1_ne2cx"]
+[ext_resource type="Script" uid="uid://di7xoj71ejjdc" path="res://addons/zylann.hterrain/hterrain.gd" id="2_bjp5t"]
+[ext_resource type="Resource" uid="uid://didjacun3nuqk" path="res://terrain/data.hterrain" id="3_k730p"]
+[ext_resource type="Script" uid="uid://pqm4v4h1j7t" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="4_a786x"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8usl3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -27,6 +30,11 @@ size = Vector3(1, 11.419617, 19.558044)
 [sub_resource type="BoxMesh" id="BoxMesh_r16dl"]
 size = Vector3(1, 8.62, 21.555)
 
+[sub_resource type="Resource" id="Resource_4dhcw"]
+script = ExtResource("4_a786x")
+mode = 0
+textures = [[], []]
+
 [node name="Node3D" type="Node3D" unique_id=935739022]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1088683860]
@@ -46,7 +54,7 @@ shape = SubResource("BoxShape3D_gv5m4")
 mesh = SubResource("BoxMesh_f3sb7")
 
 [node name="Player" parent="." unique_id=205796216 instance=ExtResource("1_ne2cx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.299971, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 95.75014, 0)
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=1541571008]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.679187, 2.1110368, 0)
@@ -57,3 +65,23 @@ shape = SubResource("BoxShape3D_8usl3")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=2109914241]
 mesh = SubResource("BoxMesh_r16dl")
+
+[node name="HTerrain" type="Node3D" parent="." unique_id=359572157]
+script = ExtResource("2_bjp5t")
+centered = true
+_terrain_data = ExtResource("3_k730p")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_4dhcw")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+metadata/_custom_type_script = "uid://di7xoj71ejjdc"
