@@ -10,6 +10,7 @@
 #### Combate
 
 - herramientas
+    - saltos, uno normal y el segundo impulsado por propulsores
     - esquive
         - dash hecho por propulsores, sos invulnerable mientras haces el dash
     - escobilla
@@ -24,6 +25,5 @@
         - barra de carga de una ulti
     - Items
         - Semilla de arbol
-        - 
     
     
