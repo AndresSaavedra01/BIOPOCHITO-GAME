@@ -1,0 +1,6 @@
+- el juego se basa en dos mecanicas, primero combate y como segundo la recoleccion y clasificacion de basura
+- islas que son mini mundos abiertos, npcs, sonas de combate 
+- tienes un contenedor gigante de basura que se ira llenando con desechos del combate y exploracion/plataformeo
+- el contenedor cuando se llene tendras que clasificar la basura que contiene en diferentes contenedores (blanco, verde y negro)
+- clasificar te dara mejoras en estadisticas y herramientas
+- cada isla tiene una tematica y una mecanica a mostrar, el mini mundo abierto tenga introduccion nundo y desenlace
