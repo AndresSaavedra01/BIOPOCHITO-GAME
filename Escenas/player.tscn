@@ -1,49 +1,51 @@
-[gd_scene format=3 uid="uid://r85rk6tglmw2"]
+[gd_scene format=3 uid="uid://b5cmo27wgdenw"]
 
 [ext_resource type="Script" uid="uid://8ydc0yk2etj5" path="res://Scripts/player.gd" id="1_4flbx"]
-[ext_resource type="Script" uid="uid://cl81edop5h3e8" path="res://Scripts/camera_controller.gd" id="2_i8vih"]
+[ext_resource type="Script" uid="uid://bve83ofn4qqkd" path="res://Scripts/camera_controller.gd" id="3_qgqwx"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_onrkg"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i8vih"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_i8vih"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i8vih"]
+albedo_color = Color(1, 1, 0.29803923, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i3pqv"]
-albedo_color = Color(1, 1, 0, 1)
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6njrx"]
+material = SubResource("StandardMaterial3D_i8vih")
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_hqtel"]
-material = SubResource("StandardMaterial3D_i3pqv")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cgfde"]
+albedo_color = Color(1, 0.24705882, 1, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sweqy"]
-albedo_color = Color(0, 0, 0, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_xlwfv"]
+material = SubResource("StandardMaterial3D_cgfde")
+size = Vector3(0.565, 0.255, 0.625)
 
-[sub_resource type="BoxMesh" id="BoxMesh_2hs0m"]
-material = SubResource("StandardMaterial3D_sweqy")
-size = Vector3(0.575, 0.35, 0.76)
+[sub_resource type="SphereShape3D" id="SphereShape3D_6njrx"]
 
-[node name="Player" type="CharacterBody3D" unique_id=205796216]
+[node name="player" type="Node3D" unique_id=1231874541]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=695595380]
+collision_layer = 2
 script = ExtResource("1_4flbx")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1269500095]
-shape = SubResource("CapsuleShape3D_onrkg")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=1012380328]
+shape = SubResource("CapsuleShape3D_i8vih")
 
-[node name="CameraController" type="Node3D" parent="." unique_id=968712654]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0593638, 0)
-script = ExtResource("2_i8vih")
+[node name="Skin" type="Node3D" parent="CharacterBody3D" unique_id=2061940177]
 
-[node name="SpringArm3D" type="SpringArm3D" parent="CameraController" unique_id=514105524]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39066303, 0)
-shape = SubResource("SphereShape3D_i8vih")
-spring_length = 5.0
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/Skin" unique_id=1053050000]
+mesh = SubResource("CapsuleMesh_6njrx")
 
-[node name="Camera3D" type="Camera3D" parent="CameraController/SpringArm3D" unique_id=88497980]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6227591)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="CharacterBody3D/Skin" unique_id=755945430]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5318253, -0.2202549)
+mesh = SubResource("BoxMesh_xlwfv")
+
+[node name="CameraController2" type="Node3D" parent="." unique_id=2041270104 node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 0.81915206, 0.57357645, 0, -0.57357645, 0.81915206, 0, 0.49664813, 0)
+script = ExtResource("3_qgqwx")
+player = NodePath("../CharacterBody3D")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraController2" unique_id=1806068986]
+shape = SubResource("SphereShape3D_6njrx")
+spring_length = 8.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraController2/SpringArm3D" unique_id=2048704697]
 current = true
-
-[node name="Skin" type="Node3D" parent="." unique_id=1393585303]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Skin" unique_id=1361151921]
-mesh = SubResource("CapsuleMesh_hqtel")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Skin/MeshInstance3D" unique_id=1374234120]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54598594, -0.20629388)
-mesh = SubResource("BoxMesh_2hs0m")
