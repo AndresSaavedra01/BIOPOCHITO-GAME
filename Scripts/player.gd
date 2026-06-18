@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 @onready var skin := $Skin
-@onready var camera_controller := $"../CameraController2"
+@onready var camera_controller := $"../CameraController"
 
 @export var SPEED := 10.0
 @export var ACCELERATION := 20.0
@@ -12,7 +12,7 @@ var current_state = states.WALK
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
-		velocity.y -= 20.0 * delta # Gravedad constante
+		velocity.y -= 20.0 * delta
 	else:
 		if velocity.y < 0:
 			velocity.y = 0
@@ -48,11 +48,13 @@ func handle_walking(delta: float):
 
 func handle_rolling(delta):
 	if is_on_floor():
+		$Skin/GPUParticles3D.emitting = true
 		var dash_direction = -skin.global_transform.basis.z
 		velocity = dash_direction * 20
 		await get_tree().create_timer(.2).timeout
 		velocity.x = move_toward(velocity.x, 0.0, 100 * delta)
 		velocity.z = move_toward(velocity.z, 0.0, 100 * delta)
+		
 	current_state = states.WALK
 	
 

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://vmqm4k0bgtdh"]
 
 [ext_resource type="PackedScene" uid="uid://b5cmo27wgdenw" path="res://Escenas/player.tscn" id="1_8usl3"]
+[ext_resource type="PackedScene" uid="uid://c86nfg6bratrd" path="res://Escenas/enemy.tscn" id="2_r16dl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8usl3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -52,6 +53,12 @@ material = SubResource("StandardMaterial3D_8usl3")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="enviroment" unique_id=1297630657]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6768737, 0.4401188, 31.526325)
+use_collision = true
+size = Vector3(5.124298, 2.0421753, 4.2924805)
+material = SubResource("StandardMaterial3D_r16dl")
+
+[node name="CSGBox3D16" type="CSGBox3D" parent="enviroment" unique_id=1267732390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6768737, 0.4401188, 7.740715)
 use_collision = true
 size = Vector3(5.124298, 2.0421753, 4.2924805)
 material = SubResource("StandardMaterial3D_r16dl")
@@ -163,3 +170,20 @@ height = 12.36499
 transform = Transform3D(1, 0, 0, 0, 0.89752793, -0.44095767, 0, 0.44095767, 0.89752793, 0, 0.78829193, 0.25296783)
 inner_radius = 7.0273223
 outer_radius = 11.238768
+
+[node name="Enemies" type="Node3D" parent="." unique_id=1675581766]
+
+[node name="Enemy" parent="Enemies" unique_id=1648498620 instance=ExtResource("2_r16dl")]
+transform = Transform3D(-0.7741939, 0, -0.6329485, 0, 1, 0, 0.6329485, 0, -0.7741939, 0, 3.708725, 54.14133)
+
+[node name="Enemy2" parent="Enemies" unique_id=1862142829 instance=ExtResource("2_r16dl")]
+transform = Transform3D(-0.5179075, 0, -0.8554366, 0, 1, 0, 0.8554366, 0, -0.5179075, 9.459076, 2.8605232, 12.962893)
+
+[node name="Enemy4" parent="Enemies" unique_id=233218855 instance=ExtResource("2_r16dl")]
+transform = Transform3D(-0.5179075, 0, -0.8554366, 0, 1, 0, 0.8554366, 0, -0.5179075, -6.6381493, 4.903407, 8.028328)
+
+[node name="Enemy5" parent="Enemies" unique_id=834144460 instance=ExtResource("2_r16dl")]
+transform = Transform3D(-0.5179075, 0, -0.8554366, 0, 1, 0, 0.8554366, 0, -0.5179075, -15.410444, 7.618161, 39.89514)
+
+[node name="Enemy3" parent="Enemies" unique_id=210363560 instance=ExtResource("2_r16dl")]
+transform = Transform3D(-0.5179075, 0, -0.8554366, 0, 1, 0, 0.8554366, 0, -0.5179075, 6.1462507, 2.8605232, 15.325422)

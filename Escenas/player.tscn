@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b5cmo27wgdenw"]
 
 [ext_resource type="Script" uid="uid://8ydc0yk2etj5" path="res://Scripts/player.gd" id="1_4flbx"]
+[ext_resource type="Texture2D" uid="uid://c3hgl1lhjdl5l" path="res://Aim Eye Burn 3.png" id="3_6njrx"]
 [ext_resource type="Script" uid="uid://bve83ofn4qqkd" path="res://Scripts/camera_controller.gd" id="3_qgqwx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i8vih"]
@@ -17,6 +18,19 @@ albedo_color = Color(1, 0.24705882, 1, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_xlwfv"]
 material = SubResource("StandardMaterial3D_cgfde")
 size = Vector3(0.565, 0.255, 0.625)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qgqwx"]
+lifetime_randomness = 0.52
+linear_accel_min = -3.4500022
+linear_accel_max = 9.199998
+scale_min = 0.5
+scale_max = 2.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_6njrx"]
+radius = 0.2
+height = 0.4
+radial_segments = 8
+rings = 8
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6njrx"]
 
@@ -38,14 +52,33 @@ mesh = SubResource("CapsuleMesh_6njrx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5318253, -0.2202549)
 mesh = SubResource("BoxMesh_xlwfv")
 
-[node name="CameraController2" type="Node3D" parent="." unique_id=2041270104 node_paths=PackedStringArray("player")]
+[node name="GPUParticles3D" type="GPUParticles3D" parent="CharacterBody3D/Skin" unique_id=2013648345]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7176735, 0.48430938)
+emitting = false
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_qgqwx")
+draw_pass_1 = SubResource("SphereMesh_6njrx")
+
+[node name="CameraController" type="Node3D" parent="." unique_id=2041270104 node_paths=PackedStringArray("player")]
 transform = Transform3D(1, 0, 0, 0, 0.81915206, 0.57357645, 0, -0.57357645, 0.81915206, 0, 0.49664813, 0)
 script = ExtResource("3_qgqwx")
 player = NodePath("../CharacterBody3D")
 
-[node name="SpringArm3D" type="SpringArm3D" parent="CameraController2" unique_id=1806068986]
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraController" unique_id=1806068986]
 shape = SubResource("SphereShape3D_6njrx")
 spring_length = 8.0
 
-[node name="Camera3D" type="Camera3D" parent="CameraController2/SpringArm3D" unique_id=2048704697]
+[node name="Camera3D" type="Camera3D" parent="CameraController/SpringArm3D" unique_id=2048704697]
 current = true
+
+[node name="Control" type="Control" parent="." unique_id=1897865667]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AimEyeBurn3" type="Sprite2D" parent="Control" unique_id=630738208]
+scale = Vector2(3, 3)
+texture = ExtResource("3_6njrx")
+hframes = 2
