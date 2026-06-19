@@ -2,6 +2,8 @@ extends CharacterBody3D
 
 @onready var skin := $Skin
 @onready var camera_controller := $"../CameraController"
+@onready var start_point_projectils := $Skin/Marker3D
+const BULLET_SCENE = preload("res://Escenas/proyectil.tscn")
 
 @export var SPEED := 10.0
 @export var ACCELERATION := 20.0
@@ -22,7 +24,14 @@ func _physics_process(delta: float) -> void:
 			handle_walking(delta)
 		states.ROLL:
 			handle_rolling(delta)
-
+	
+	if Input.is_action_just_pressed("shoot"):
+		if camera_controller.currentAimEnemy == null:
+			launch_projectil(-skin.global_transform.basis.z, 25.0)
+		else: 
+			print(camera_controller.currentAimEnemy)
+			launch_projectil(-start_point_projectils.global_position + camera_controller.currentAimEnemy.global_position, 25.0)
+	
 	move_and_slide()
 
 
@@ -58,6 +67,10 @@ func handle_rolling(delta):
 	current_state = states.WALK
 	
 
+func launch_projectil(direction: Vector3, speed: float):
+	var new_proyectil :Bullet = BULLET_SCENE.instantiate()
+	get_tree().current_scene.add_child(new_proyectil)
+	new_proyectil.initialize(start_point_projectils.global_position, direction.normalized(), speed)
 
 func get_move_direction(input: Vector2) -> Vector3:
 	var forward: Vector3 = camera_controller.get_forward_direction()

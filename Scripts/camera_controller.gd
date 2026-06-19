@@ -3,11 +3,12 @@ extends Node3D
 @export var aim_speed := 4
 @export var suavizado_horizontal: float = 0.1
 @export var suavizado_vertical: float = 0.05
-@export var mouse_sensibility := 0.003 # Ajustado para mouse
-@export var joystick_sensibility := .05  # Ajustado para joystick (es un multiplicador de rotación)
+@export var mouse_sensibility := 0.003 
+@export var joystick_sensibility := .05 
 @export var player : CharacterBody3D
 @onready var spring_arm := $SpringArm3D
 @onready var camera := $SpringArm3D/Camera3D
+@onready var aimSprite := $"../Control/AimEyeBurn3"
 
 var h_rotation := 0.0
 var v_rotation := 0.0
@@ -58,10 +59,10 @@ func aimAtEnemy(delta: float):
 		if currentAimEnemy != null:
 			
 			look_at_enemy(currentAimEnemy, delta)
-			$"../Control/AimEyeBurn3".visible = true
-			$"../Control/AimEyeBurn3".global_position = camera.unproject_position(currentAimEnemy.global_position)
+			aimSprite.visible = true
+			aimSprite.global_position = camera.unproject_position(currentAimEnemy.global_position)
 	else:
-		$"../Control/AimEyeBurn3".visible = false
+		aimSprite.visible = false
 		currentAimEnemy = null
 		return
 
@@ -81,21 +82,6 @@ func look_at_enemy(enemy: CharacterBody3D, delta: float):
 	rotation.y = h_rotation
 	spring_arm.rotation.x = clamp(v_rotation, deg_to_rad(-45), deg_to_rad(55))
 
-
-func findNearestEnemy() -> CharacterBody3D:
-	var enemies =  get_tree().get_nodes_in_group("Enemies")
-	if enemies.is_empty():
-		return null
-	var nearest = null
-	var min_dist = INF
-	for e in enemies:
-		var dist = (player.global_position - e.global_position).length()
-		if dist < min_dist:
-			min_dist = dist
-			nearest = e
-	if min_dist > 30.0:
-		return null
-	return nearest
 
 func findBestEnemyToAim() -> CharacterBody3D:
 	var enemies =  get_tree().get_nodes_in_group("Enemies")

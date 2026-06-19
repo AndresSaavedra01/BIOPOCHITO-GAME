@@ -31,6 +31,12 @@ albedo_color = Color(1, 0.40784314, 0.34901962, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_255mg"]
 albedo_color = Color(0.20392157, 0.52156866, 1, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_r16dl"]
+size = Vector3(8.636719, 1, 5.158325)
+
+[sub_resource type="BoxMesh" id="BoxMesh_255mg"]
+size = Vector3(8.655, 1, 5.1)
+
 [node name="Node3D" type="Node3D" unique_id=935739022]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1088683860]
@@ -171,6 +177,17 @@ transform = Transform3D(1, 0, 0, 0, 0.89752793, -0.44095767, 0, 0.44095767, 0.89
 inner_radius = 7.0273223
 outer_radius = 11.238768
 
+[node name="StaticBody3D" type="StaticBody3D" parent="enviroment" unique_id=1692398341]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.951336, 0.37069607, 2.6163359)
+constant_linear_velocity = Vector3(0, 15, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="enviroment/StaticBody3D" unique_id=111681595]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7880859, -0.059929132, 0.14898682)
+shape = SubResource("BoxShape3D_r16dl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="enviroment/StaticBody3D/CollisionShape3D" unique_id=1425628349]
+mesh = SubResource("BoxMesh_255mg")
+
 [node name="Enemies" type="Node3D" parent="." unique_id=1675581766]
 
 [node name="Enemy" parent="Enemies" unique_id=1648498620 instance=ExtResource("2_r16dl")]
@@ -178,6 +195,9 @@ transform = Transform3D(-0.7741939, 0, -0.6329485, 0, 1, 0, 0.6329485, 0, -0.774
 
 [node name="Enemy2" parent="Enemies" unique_id=1862142829 instance=ExtResource("2_r16dl")]
 transform = Transform3D(-0.5179075, 0, -0.8554366, 0, 1, 0, 0.8554366, 0, -0.5179075, 9.459076, 2.8605232, 12.962893)
+
+[node name="Enemy6" parent="Enemies" unique_id=1006190518 instance=ExtResource("2_r16dl")]
+transform = Transform3D(-0.5179075, 0, -0.8554366, 0, 1, 0, 0.8554366, 0, -0.5179075, 16.482018, 2.8605232, 1.9402428)
 
 [node name="Enemy4" parent="Enemies" unique_id=233218855 instance=ExtResource("2_r16dl")]
 transform = Transform3D(-0.5179075, 0, -0.8554366, 0, 1, 0, 0.8554366, 0, -0.5179075, -6.6381493, 4.903407, 8.028328)
