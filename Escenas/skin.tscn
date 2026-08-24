@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://b13r7st07ch1u"]
+
+[ext_resource type="Script" uid="uid://b85q4wuwtirsq" path="res://Scripts/skin.gd" id="1_55byv"]
+[ext_resource type="Shader" uid="uid://ht5jdrnwdkiw" path="res://Assest/Shaders/shader.gdshader" id="2_usgx0"]
+[ext_resource type="PackedScene" uid="uid://cm63kx83d78ti" path="res://Assest/Blender/bio_2.tscn" id="3_11p0l"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_55byv"]
+animation = &"fall"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_usgx0"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_11p0l"]
+animation = &"jump"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_axegn"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n624q"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2wmsb"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_83qqq"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cgvrs"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1h224"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_amkqk"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b2m3y"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dygew"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_syl02"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4dbv8"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_px06i"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eky1x"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lb2ge"]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_xy87q"]
+states/End/position = Vector2(994, 100)
+states/fall/node = SubResource("AnimationNodeAnimation_55byv")
+states/fall/position = Vector2(384, 176)
+states/idle/node = SubResource("AnimationNodeAnimation_usgx0")
+states/idle/position = Vector2(384, 46)
+states/jump/node = SubResource("AnimationNodeAnimation_11p0l")
+states/jump/position = Vector2(508, 176)
+states/run/node = SubResource("AnimationNodeAnimation_axegn")
+states/run/position = Vector2(508, 46)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_n624q"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_2wmsb"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_83qqq"), "idle", "fall", SubResource("AnimationNodeStateMachineTransition_cgvrs"), "fall", "idle", SubResource("AnimationNodeStateMachineTransition_1h224"), "fall", "run", SubResource("AnimationNodeStateMachineTransition_amkqk"), "run", "fall", SubResource("AnimationNodeStateMachineTransition_b2m3y"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_dygew"), "jump", "idle", SubResource("AnimationNodeStateMachineTransition_syl02"), "fall", "jump", SubResource("AnimationNodeStateMachineTransition_4dbv8"), "jump", "fall", SubResource("AnimationNodeStateMachineTransition_px06i"), "jump", "run", SubResource("AnimationNodeStateMachineTransition_eky1x"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_lb2ge")]
+graph_offset = Vector2(-13, -17)
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_d6w4w"]
+nodes/output/position = Vector2(380, 160)
+nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_xy87q")
+nodes/StateMachine/position = Vector2(60, 120)
+node_connections = [&"output", 0, &"StateMachine"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_axegn"]
+render_priority = 0
+shader = ExtResource("2_usgx0")
+shader_parameter/albedo_color = Color(0.80784315, 0.54901963, 1, 1)
+shader_parameter/shadow_opacity = 0.5
+shader_parameter/blend_mode = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_d6w4w"]
+lightmap_size_hint = Vector2i(17, 24)
+material = SubResource("ShaderMaterial_axegn")
+size = Vector3(1.6035156, 1, 1)
+
+[node name="Skin" type="Node3D" unique_id=888982490]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+script = ExtResource("1_55byv")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1499563534]
+tree_root = SubResource("AnimationNodeBlendTree_d6w4w")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=248347833]
+transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, -0.3017578, 0, 0)
+visible = false
+mesh = SubResource("BoxMesh_d6w4w")
+
+[node name="bio2" parent="." unique_id=390710934 instance=ExtResource("3_11p0l")]
+transform = Transform3D(-1.6666665, 0, -1.4570462e-07, 0, 1.6666665, 0, 1.4570462e-07, 0, -1.6666665, 0, 0, 0)

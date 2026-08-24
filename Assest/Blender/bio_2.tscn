@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://cm63kx83d78ti"]
+
+[ext_resource type="PackedScene" uid="uid://dnmvrosjc7yap" path="res://Assest/Blender/bio.glb" id="1_hewrq"]
+[ext_resource type="Shader" uid="uid://ht5jdrnwdkiw" path="res://Assest/Shaders/shader.gdshader" id="2_bdd4p"]
+[ext_resource type="Texture2D" uid="uid://bhla13yim162v" path="res://Assest/Blender/bio_bio.png" id="3_valf6"]
+[ext_resource type="Texture2D" uid="uid://b3bxe82hns3av" path="res://Assest/Blender/bio_faces.png" id="4_gmlcl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_50bgh"]
+render_priority = 0
+shader = ExtResource("2_bdd4p")
+shader_parameter/model_texture = ExtResource("3_valf6")
+shader_parameter/albedo_color = Color(1, 1, 1, 1)
+shader_parameter/shadow_opacity = 0.5
+shader_parameter/blend_mode = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cabul"]
+render_priority = 0
+shader = ExtResource("2_bdd4p")
+shader_parameter/model_texture = ExtResource("4_gmlcl")
+shader_parameter/albedo_color = Color(1, 1, 1, 1)
+shader_parameter/shadow_opacity = 0.5
+shader_parameter/blend_mode = 0
+
+[node name="bio2" unique_id=390710934 instance=ExtResource("1_hewrq")]
+
+[node name="bio" parent="rig/Skeleton3D" parent_id_path=PackedInt32Array(930426717) index="0" unique_id=486187438]
+surface_material_override/0 = SubResource("ShaderMaterial_50bgh")
+
+[node name="bio_001" parent="rig/Skeleton3D" parent_id_path=PackedInt32Array(930426717) index="1" unique_id=1824767349]
+surface_material_override/0 = SubResource("ShaderMaterial_cabul")

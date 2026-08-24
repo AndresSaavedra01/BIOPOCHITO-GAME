@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://b5cmo27wgdenw"]
 
 [ext_resource type="Script" uid="uid://8ydc0yk2etj5" path="res://Scripts/player.gd" id="1_4flbx"]
-[ext_resource type="Texture2D" uid="uid://c3hgl1lhjdl5l" path="res://Aim Eye Burn 3.png" id="3_6njrx"]
+[ext_resource type="Script" uid="uid://ok2yotvrt0yf" path="res://Scripts/weapon.gd" id="2_6njrx"]
+[ext_resource type="Texture2D" uid="uid://c3hgl1lhjdl5l" path="res://Assest/Aim Eye Burn 3.png" id="3_6njrx"]
+[ext_resource type="PackedScene" uid="uid://cydmcsar3kk8u" path="res://Escenas/proyectil.tscn" id="3_cgfde"]
 [ext_resource type="Script" uid="uid://bve83ofn4qqkd" path="res://Scripts/camera_controller.gd" id="3_qgqwx"]
+[ext_resource type="Script" uid="uid://t1u7l5shsqqs" path="res://Scripts/item_colector.gd" id="4_xlwfv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i8vih"]
 
@@ -32,13 +35,23 @@ height = 0.4
 radial_segments = 8
 rings = 8
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_d6w4w"]
+size = Vector3(1.7137451, 1.2768555, 1.8598633)
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_6njrx"]
 
 [node name="player" type="Node3D" unique_id=1231874541]
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=695595380]
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=695595380 node_paths=PackedStringArray("skin", "dash_particles", "camera_controller", "weapon", "mark_item_position")]
 collision_layer = 2
+collision_mask = 9
 script = ExtResource("1_4flbx")
+skin = NodePath("Skin")
+dash_particles = NodePath("Skin/GPUParticles3D")
+camera_controller = NodePath("CameraController")
+weapon = NodePath("Skin/Marker3D")
+mark_item_position = NodePath("Skin/Marker3D2")
+push_force = 10.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=1012380328]
 shape = SubResource("CapsuleShape3D_i8vih")
@@ -61,17 +74,32 @@ draw_pass_1 = SubResource("SphereMesh_6njrx")
 
 [node name="Marker3D" type="Marker3D" parent="CharacterBody3D/Skin" unique_id=706305527]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.017469764, -0.7483151)
+script = ExtResource("2_6njrx")
+bullet_scene = ExtResource("3_cgfde")
 
-[node name="CameraController" type="Node3D" parent="." unique_id=2041270104 node_paths=PackedStringArray("player")]
+[node name="Marker3D2" type="Marker3D" parent="CharacterBody3D/Skin" unique_id=55591291]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6782873, 0)
+
+[node name="Area3D" type="Area3D" parent="CharacterBody3D/Skin" unique_id=796654333 node_paths=PackedStringArray("player")]
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("4_xlwfv")
+player = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Skin/Area3D" unique_id=841864112]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.022521973, -0.13842773, -0.42993164)
+shape = SubResource("BoxShape3D_d6w4w")
+
+[node name="CameraController" type="Node3D" parent="CharacterBody3D" unique_id=2041270104 node_paths=PackedStringArray("player")]
 transform = Transform3D(1, 0, 0, 0, 0.81915206, 0.57357645, 0, -0.57357645, 0.81915206, 0, 0.49664813, 0)
 script = ExtResource("3_qgqwx")
-player = NodePath("../CharacterBody3D")
+player = NodePath("..")
 
-[node name="SpringArm3D" type="SpringArm3D" parent="CameraController" unique_id=1806068986]
+[node name="SpringArm3D" type="SpringArm3D" parent="CharacterBody3D/CameraController" unique_id=1806068986]
 shape = SubResource("SphereShape3D_6njrx")
 spring_length = 8.0
 
-[node name="Camera3D" type="Camera3D" parent="CameraController/SpringArm3D" unique_id=2048704697]
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/CameraController/SpringArm3D" unique_id=2048704697]
 current = true
 
 [node name="Control" type="Control" parent="." unique_id=1897865667]
@@ -85,3 +113,6 @@ offset_bottom = 40.0
 scale = Vector2(3, 3)
 texture = ExtResource("3_6njrx")
 hframes = 2
+
+[connection signal="body_entered" from="CharacterBody3D/Skin/Area3D" to="CharacterBody3D/Skin/Area3D" method="_on_body_entered"]
+[connection signal="body_exited" from="CharacterBody3D/Skin/Area3D" to="CharacterBody3D/Skin/Area3D" method="_on_body_exited"]

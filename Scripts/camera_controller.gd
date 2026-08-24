@@ -8,7 +8,7 @@ extends Node3D
 @export var player : CharacterBody3D
 @onready var spring_arm := $SpringArm3D
 @onready var camera := $SpringArm3D/Camera3D
-@onready var aimSprite := $"../Control/AimEyeBurn3"
+@onready var aimSprite := $"../../Control/AimEyeBurn3"
 
 var h_rotation := 0.0
 var v_rotation := 0.0

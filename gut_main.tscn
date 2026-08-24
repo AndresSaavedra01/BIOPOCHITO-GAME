@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cpqf7q27ees65"]
+
+[ext_resource type="Script" uid="uid://duvvxvj18c04d" path="res://addons/gut/gut.gd" id="1_0gj6j"]
+
+[node name="GutMain" type="Node" unique_id=1213429607]
+script = ExtResource("1_0gj6j")
+metadata/_custom_type_script = "uid://duvvxvj18c04d"

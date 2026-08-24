@@ -25,5 +25,3 @@
 		- barra de carga de una ulti
 	- Items
 		- Semilla de arbol
-	
-	

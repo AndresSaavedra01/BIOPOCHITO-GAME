@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2026-08-15" name="report_1" tests="1" failures="0" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_camera3d" package="Components/camera3dComponet/test" timestamp="2026-08-15T17:17:17" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="2.032">
+		<testcase name="test_player" classname="test_camera3d" time="1.903">
+		</testcase>
+	</testsuite>
+</testsuites>

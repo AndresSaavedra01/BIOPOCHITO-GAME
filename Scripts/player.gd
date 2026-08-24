@@ -1,78 +1,121 @@
-extends CharacterBody3D
+class_name Player extends CharacterBody3D
 
-@onready var skin := $Skin
-@onready var camera_controller := $"../CameraController"
-@onready var start_point_projectils := $Skin/Marker3D
-const BULLET_SCENE = preload("res://Escenas/proyectil.tscn")
+# --- ENUMS ---
+enum State { WALK, ROLL }
 
-@export var SPEED := 10.0
-@export var ACCELERATION := 20.0
-@export var DECELERATION := 28.0
-@export var JUMP_VELOCITY := 9.5
-enum states {WALK, ROLL}
-var current_state = states.WALK
+# --- DEPENDENCIAS (Inyectadas desde el Inspector) ---
+@export_group("Nodes")
+@export var skin: Node3D
+@export var dash_particles: GPUParticles3D
+@export var camera_controller: Node3D
+@export var weapon: WeaponComponent # Referencia al nuevo script/nodo
+@export var mark_item_position:  Marker3D
 
+# --- ATRIBUTOS EXPORTADOS ---
+@export_group("Movement Stats")
+@export var speed: float = 10.0
+@export var acceleration: float = 30.0
+@export var deceleration: float = 28.0
+@export var jump_velocity: float = 9.5
+@export var roll_speed: float = 20.0
+@export var roll_duration: float = 0.2
+@export var push_force: float = 20.0
+
+# --- VARIABLES PRIVADAS (Encapsulamiento) ---
+var _current_state: State = State.WALK
+var _roll_timer: float = 0.0
+var _gravity: float = 20.0
+
+# --- MÉTODOS NATIVOS ---
 func _physics_process(delta: float) -> void:
-	if not is_on_floor():
-		velocity.y -= 20.0 * delta
-	else:
-		if velocity.y < 0:
-			velocity.y = 0
+	_apply_gravity(delta)
 
-	match current_state:
-		states.WALK:
-			handle_walking(delta)
-		states.ROLL:
-			handle_rolling(delta)
+	match _current_state:
+		State.WALK:
+			_handle_walking(delta)
+		State.ROLL:
+			_handle_rolling(delta)
 	
-	if Input.is_action_just_pressed("shoot"):
-		if camera_controller.currentAimEnemy == null:
-			launch_projectil(-skin.global_transform.basis.z, 25.0)
-		else: 
-			print(camera_controller.currentAimEnemy)
-			launch_projectil(-start_point_projectils.global_position + camera_controller.currentAimEnemy.global_position, 25.0)
-	
+	_handle_combat()
 	move_and_slide()
+	
+	for i in get_slide_collision_count():
+		var c = get_slide_collision(i)
+		if c.get_collider() is RigidBody3D:
+			print(-c.get_normal())
+			var push = push_force + velocity.length()
+			print(push)
+			c.get_collider().apply_central_impulse(-c.get_normal() * push)
+			
+	
 
-
-func handle_walking(delta: float):
+# --- MÉTODOS DE ESTADO ---
+func _handle_walking(delta: float) -> void:
 	var input_dir := Input.get_vector("left", "right", "up", "down").normalized()
-	var move_dir := get_move_direction(input_dir)
+	var move_dir := _get_move_direction(input_dir)
 	
 	if move_dir != Vector3.ZERO:
-		velocity.x = move_dir.x * SPEED
-		velocity.z = move_dir.z * SPEED
-
-		rotate_skin(delta, move_dir)
+		# Calculamos a qué velocidad queremos llegar (velocidad objetivo)
+		var target_vel_x := move_dir.x * speed
+		var target_vel_z := move_dir.z * speed
+		
+		# Aceleramos progresivamente desde la velocidad actual hacia la objetivo
+		velocity.x = move_toward(velocity.x, target_vel_x, acceleration * delta)
+		velocity.z = move_toward(velocity.z, target_vel_z, acceleration * delta)
+		print(target_vel_x)
+		_rotate_skin(delta, move_dir)
 	else:
-		velocity.x = move_toward(velocity.x, 0.0, DECELERATION * delta)
-		velocity.z = move_toward(velocity.z, 0.0, DECELERATION * delta)
+		# Desaceleramos progresivamente hasta 0 cuando soltamos los controles
+		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
+		velocity.z = move_toward(velocity.z, 0.0, deceleration * delta)
 	
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-			velocity.y = JUMP_VELOCITY
-	elif Input.is_action_just_pressed("roll"):
-			current_state = states.ROLL
+		velocity.y = jump_velocity
+			
+	if Input.is_action_just_pressed("roll") and is_on_floor():
+		_start_roll()
 
+func _start_roll() -> void:
+	_current_state = State.ROLL
+	_roll_timer = roll_duration # Usamos un temporizador en lugar de 'await'
+	
+	if dash_particles:
+		dash_particles.emitting = true
+		
+	var dash_direction := -skin.global_transform.basis.z
+	velocity = dash_direction * roll_speed
 
-
-func handle_rolling(delta):
-	if is_on_floor():
-		$Skin/GPUParticles3D.emitting = true
-		var dash_direction = -skin.global_transform.basis.z
-		velocity = dash_direction * 20
-		await get_tree().create_timer(.2).timeout
+func _handle_rolling(delta: float) -> void:
+	# Restamos el tiempo en cada frame de físicas
+	_roll_timer -= delta
+	
+	if _roll_timer <= 0.0:
 		velocity.x = move_toward(velocity.x, 0.0, 100 * delta)
 		velocity.z = move_toward(velocity.z, 0.0, 100 * delta)
+		_current_state = State.WALK
+
+# --- MÉTODOS DE ACCIÓN ---
+func _handle_combat() -> void:
+	if Input.is_action_just_pressed("shoot") and weapon:
+		var target = null
+		# Evitamos errores verificando si el nodo tiene la propiedad
+		if camera_controller and "currentAimEnemy" in camera_controller:
+			target = camera_controller.currentAimEnemy
+			
+		var default_dir := -skin.global_transform.basis.z
+		weapon.shoot(default_dir, target)
+
+# --- MÉTODOS AUXILIARES (Lógica extraída) ---
+func _apply_gravity(delta: float) -> void:
+	if not is_on_floor():
+		velocity.y -= _gravity * delta
+	elif velocity.y < 0:
+		velocity.y = 0.0
+
+func _get_move_direction(input: Vector2) -> Vector3:
+	if not camera_controller:
+		return Vector3.ZERO
 		
-	current_state = states.WALK
-	
-
-func launch_projectil(direction: Vector3, speed: float):
-	var new_proyectil :Bullet = BULLET_SCENE.instantiate()
-	get_tree().current_scene.add_child(new_proyectil)
-	new_proyectil.initialize(start_point_projectils.global_position, direction.normalized(), speed)
-
-func get_move_direction(input: Vector2) -> Vector3:
 	var forward: Vector3 = camera_controller.get_forward_direction()
 	var right: Vector3 = camera_controller.get_right_direction()
 
@@ -81,10 +124,7 @@ func get_move_direction(input: Vector2) -> Vector3:
 
 	return direction.normalized()
 
-func rotate_skin(delta: float, move_direction: Vector3) -> void:
+func _rotate_skin(delta: float, move_direction: Vector3) -> void:
+	if not skin: return
 	var target_rotation := atan2(-move_direction.x, -move_direction.z)
-	skin.rotation.y = lerp_angle(
-		skin.rotation.y,
-		target_rotation,
-		20.0 * delta
-	)
+	skin.rotation.y = lerp_angle(skin.rotation.y, target_rotation, 20.0 * delta)

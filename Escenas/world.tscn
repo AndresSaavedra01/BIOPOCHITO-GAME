@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b5cmo27wgdenw" path="res://Escenas/player.tscn" id="1_8usl3"]
 [ext_resource type="PackedScene" uid="uid://c86nfg6bratrd" path="res://Escenas/enemy.tscn" id="2_r16dl"]
+[ext_resource type="PackedScene" uid="uid://dymwoxhctl0w6" path="res://Escenas/physic_object.tscn" id="3_255mg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8usl3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -207,3 +208,32 @@ transform = Transform3D(-0.5179075, 0, -0.8554366, 0, 1, 0, 0.8554366, 0, -0.517
 
 [node name="Enemy3" parent="Enemies" unique_id=210363560 instance=ExtResource("2_r16dl")]
 transform = Transform3D(-0.5179075, 0, -0.8554366, 0, 1, 0, 0.8554366, 0, -0.5179075, 6.1462507, 2.8605232, 15.325422)
+
+[node name="Objects" type="Node3D" parent="." unique_id=145757576]
+
+[node name="PhysicObject" parent="Objects" unique_id=590520439 instance=ExtResource("3_255mg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.662481, 1.2004051, 0)
+
+[node name="PhysicObject2" parent="Objects" unique_id=1363009055 instance=ExtResource("3_255mg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.173792, 5.4386244, 4.7524233)
+
+[node name="PhysicObject3" parent="Objects" unique_id=1793037485 instance=ExtResource("3_255mg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.173792, 5.4386244, 2.561185)
+
+[node name="PhysicObject4" parent="Objects" unique_id=1484817096 instance=ExtResource("3_255mg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.173792, 10.725245, 7.6798687)
+
+[node name="PhysicObject5" parent="Objects" unique_id=804163892 instance=ExtResource("3_255mg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.173792, 10.725245, -4.5458927)
+
+[node name="PhysicObject6" parent="Objects" unique_id=1720551926 instance=ExtResource("3_255mg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.173792, 10.725245, 1.5434241)
+
+[node name="PhysicObject7" parent="Objects" unique_id=1565328161 instance=ExtResource("3_255mg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.173792, 10.725245, -3.5441322)
+
+[node name="PhysicObject8" parent="Objects" unique_id=167987868 instance=ExtResource("3_255mg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.173792, 10.725245, -0.88900256)
+
+[node name="PhysicObject9" parent="Objects" unique_id=527744497 instance=ExtResource("3_255mg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.173792, 10.725245, 4.58945)
